@@ -35,6 +35,13 @@ class ToDoListTableViewController: UITableViewController {
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = items[indexPath.row]
+        print("Pressed cell \(cell)")
+        tableView.cellForRow(at: indexPath)?.accessoryType =
+        (tableView.cellForRow(at: indexPath)?.accessoryType) == .checkmark ? .none : .checkmark 
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
