@@ -10,11 +10,17 @@ import UIKit
 class ToDoListTableViewController: UITableViewController {
 
     var items = ["English classes", "Pet-Progect", "Reading book", "Marathon", "Presentation"]
+    var userDefaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.backgroundColor =  #colorLiteral(red: 0.2103916407, green: 0.5888115764, blue: 1, alpha: 1)   }
+        navigationController?.navigationBar.backgroundColor =  #colorLiteral(red: 0.2103916407, green: 0.5888115764, blue: 1, alpha: 1)
+        guard let defaults = userDefaults.array(forKey: "ToDoList") as? [String] else {
+            return
+        }
+        items = defaults
+    }
 
     // MARK: - Table view data source
 
@@ -52,6 +58,7 @@ class ToDoListTableViewController: UITableViewController {
                 return
             }
             self.items.append(new)
+            self.userDefaults.set(self.items, forKey: "ToDoList")
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
