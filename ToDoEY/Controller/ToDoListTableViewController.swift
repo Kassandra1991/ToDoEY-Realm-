@@ -10,25 +10,12 @@ import UIKit
 class ToDoListTableViewController: UITableViewController {
 
     var items = [Item]()
-    var userDefaults = UserDefaults.standard
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathExtension("Items.plist")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let item = Item()
-        item.title = "English classes"
-        items.append(item)
-        let item2 = Item()
-        item2.title = "Pet-Progect"
-        items.append(item2)
-        let item3 = Item()
-        item3.title = "Marathon"
-        items.append(item3)
         navigationController?.navigationBar.backgroundColor =  #colorLiteral(red: 0.2103916407, green: 0.5888115764, blue: 1, alpha: 1)
-//        guard let defaults = userDefaults.array(forKey: "ToDoList") as? [String] else {
-//            return
-//        }
-//        items = defaults
+        loadItems()
     }
 
     // MARK: - Table view data source
@@ -51,7 +38,8 @@ class ToDoListTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = items[indexPath.row]
-        items[indexPath.row].isDone = !items[indexPath.row].isDone
+        cell.isDone = !cell.isDone
+        self.saveItems()
         tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -68,10 +56,7 @@ class ToDoListTableViewController: UITableViewController {
             let newItem = Item()
             newItem.title = new
             self.items.append(newItem)
-            self.userDefaults.set(self.items, forKey: "ToDoList")
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
+            self.saveItems()
         }
         alert.addTextField { tf in
             tf.placeholder = "new item"
@@ -79,5 +64,26 @@ class ToDoListTableViewController: UITableViewController {
         }
         alert.addAction(ok)
         present(alert, animated: true)
+    }
+    
+    private func saveItems() {
+        let encoder = PropertyListEncoder()
+        do {
+            let data = try encoder.encode(items)
+            try data.write(to: dataFilePath!)
+        } catch {
+                print("Something wrong \(error.localizedDescription)")
+        }
+    }
+    
+    private func loadItems() {
+        if let data = try? Data(contentsOf: dataFilePath!) {
+            let decoder = PropertyListDecoder()
+            do {
+                items = try decoder.decode([Item].self, from: data)
+            } catch  {
+                print("Error \(error.localizedDescription)")
+            }
+        }
     }
 }
