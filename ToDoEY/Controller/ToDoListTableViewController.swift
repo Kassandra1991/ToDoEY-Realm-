@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import CoreData
 
 class ToDoListTableViewController: UITableViewController {
 
     var items = [Item]()
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathExtension("Items.plist")
+    //let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathExtension("Items.plist")
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +41,7 @@ class ToDoListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = items[indexPath.row]
         cell.isDone = !cell.isDone
-//        self.saveItems()
+        self.saveItems()
         tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -53,10 +55,11 @@ class ToDoListTableViewController: UITableViewController {
             guard let new = textField.text else {
                 return
             }
-            let newItem = Item()
+            let newItem = Item(context: self.context)
             newItem.title = new
+            newItem.isDone = false
             self.items.append(newItem)
-//            self.saveItems()
+            self.saveItems()
         }
         alert.addTextField { tf in
             tf.placeholder = "new item"
@@ -66,21 +69,19 @@ class ToDoListTableViewController: UITableViewController {
         present(alert, animated: true)
     }
     
-//    private func saveItems() {
-//        let encoder = PropertyListEncoder()
-//        do {
-//            let data = try encoder.encode(items)
-//            try data.write(to: dataFilePath!)
-//        } catch {
-//                print("Something wrong \(error.localizedDescription)")
-//        }
-//    }
+    private func saveItems() {
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context: \(error.localizedDescription)")
+        }
+        self.tableView.reloadData()
+    }
     
 //    private func loadItems() {
-//        if let data = try? Data(contentsOf: dataFilePath!) {
-//            let decoder = PropertyListDecoder()
+//        if let data = try? Data(contentsOf: context) {
 //            do {
-//                items = try decoder.decode([Item].self, from: data)
+//                items = try
 //            } catch  {
 //                print("Error \(error.localizedDescription)")
 //            }
