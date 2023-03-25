@@ -15,7 +15,7 @@ class ToDoListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.backgroundColor =  #colorLiteral(red: 0.2103916407, green: 0.5888115764, blue: 1, alpha: 1)
-        loadItems()
+//        loadItems()
     }
 
     // MARK: - Table view data source
@@ -39,7 +39,7 @@ class ToDoListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = items[indexPath.row]
         cell.isDone = !cell.isDone
-        self.saveItems()
+//        self.saveItems()
         tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -56,7 +56,7 @@ class ToDoListTableViewController: UITableViewController {
             let newItem = Item()
             newItem.title = new
             self.items.append(newItem)
-            self.saveItems()
+//            self.saveItems()
         }
         alert.addTextField { tf in
             tf.placeholder = "new item"
@@ -66,24 +66,24 @@ class ToDoListTableViewController: UITableViewController {
         present(alert, animated: true)
     }
     
-    private func saveItems() {
-        let encoder = PropertyListEncoder()
-        do {
-            let data = try encoder.encode(items)
-            try data.write(to: dataFilePath!)
-        } catch {
-                print("Something wrong \(error.localizedDescription)")
-        }
-    }
+//    private func saveItems() {
+//        let encoder = PropertyListEncoder()
+//        do {
+//            let data = try encoder.encode(items)
+//            try data.write(to: dataFilePath!)
+//        } catch {
+//                print("Something wrong \(error.localizedDescription)")
+//        }
+//    }
     
-    private func loadItems() {
-        if let data = try? Data(contentsOf: dataFilePath!) {
-            let decoder = PropertyListDecoder()
-            do {
-                items = try decoder.decode([Item].self, from: data)
-            } catch  {
-                print("Error \(error.localizedDescription)")
-            }
-        }
-    }
+//    private func loadItems() {
+//        if let data = try? Data(contentsOf: dataFilePath!) {
+//            let decoder = PropertyListDecoder()
+//            do {
+//                items = try decoder.decode([Item].self, from: data)
+//            } catch  {
+//                print("Error \(error.localizedDescription)")
+//            }
+//        }
+//    }
 }
