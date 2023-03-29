@@ -38,10 +38,9 @@ class ToDoListTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = items[indexPath.row]
-        cell.isDone = !cell.isDone
+        items[indexPath.row].isDone = !items[indexPath.row].isDone
+        //items[indexPath.row].setValue("Complete", forKey: "title")
         self.saveItems()
-        tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
  
