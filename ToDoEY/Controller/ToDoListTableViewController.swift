@@ -84,8 +84,11 @@ class ToDoListTableViewController: UITableViewController {
         } catch  {
             print("Error fetch request: \(error.localizedDescription)")
         }
+        tableView.reloadData()
     }
 }
+
+// MARK: - UISearchBarDelegate
 
 extension ToDoListTableViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -96,5 +99,14 @@ extension ToDoListTableViewController: UISearchBarDelegate {
         request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", text)
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         loadItems(with: request)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
     }
 }
