@@ -11,13 +11,12 @@ import CoreData
 class ToDoListTableViewController: UITableViewController {
 
     var items = [Item]()
-    //let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathExtension("Items.plist")
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.backgroundColor =  #colorLiteral(red: 0.2103916407, green: 0.5888115764, blue: 1, alpha: 1)
-//        loadItems()
+        loadItems()
     }
 
     // MARK: - Table view data source
@@ -78,13 +77,12 @@ class ToDoListTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-//    private func loadItems() {
-//        if let data = try? Data(contentsOf: context) {
-//            do {
-//                items = try
-//            } catch  {
-//                print("Error \(error.localizedDescription)")
-//            }
-//        }
-//    }
+    private func loadItems() {
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        do {
+            items = try context.fetch(request)
+        } catch  {
+            print("Error fetch request: \(error.localizedDescription)")
+        }
+    }
 }
