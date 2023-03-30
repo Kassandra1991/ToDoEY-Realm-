@@ -13,6 +13,7 @@
 		035798B129C8CAEF0067128F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 035798B029C8CAEF0067128F /* Assets.xcassets */; };
 		035798B429C8CAEF0067128F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 035798B229C8CAEF0067128F /* LaunchScreen.storyboard */; };
 		035798BC29C8CB850067128F /* ToDoListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035798BB29C8CB850067128F /* ToDoListTableViewController.swift */; };
+		03A73AA429D56FAF00D900FF /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A73AA329D56FAF00D900FF /* CategoryTableViewController.swift */; };
 		03AFA92229CEC0A10062B7AE /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 03AFA92029CEC0A00062B7AE /* DataModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +26,7 @@
 		035798B329C8CAEF0067128F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		035798B529C8CAEF0067128F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		035798BB29C8CB850067128F /* ToDoListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListTableViewController.swift; sourceTree = "<group>"; };
+		03A73AA329D56FAF00D900FF /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
 		03AFA92129CEC0A00062B7AE /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,6 +83,7 @@
 		03AFA91E29CB171B0062B7AE /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				03A73AA329D56FAF00D900FF /* CategoryTableViewController.swift */,
 				035798BB29C8CB850067128F /* ToDoListTableViewController.swift */,
 			);
 			path = Controller;
@@ -167,6 +170,7 @@
 			files = (
 				03AFA92229CEC0A10062B7AE /* DataModel.xcdatamodeld in Sources */,
 				035798A829C8CAEE0067128F /* AppDelegate.swift in Sources */,
+				03A73AA429D56FAF00D900FF /* CategoryTableViewController.swift in Sources */,
 				035798AA29C8CAEE0067128F /* SceneDelegate.swift in Sources */,
 				035798BC29C8CB850067128F /* ToDoListTableViewController.swift in Sources */,
 			);
