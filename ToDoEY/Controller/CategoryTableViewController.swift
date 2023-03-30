@@ -12,6 +12,8 @@ class CategoryTableViewController: UITableViewController {
 
     var categories = [CategoryItem]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+   
+    // MARK: - viewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +21,8 @@ class CategoryTableViewController: UITableViewController {
         navigationController?.navigationBar.backgroundColor =  #colorLiteral(red: 0.2103916407, green: 0.5888115764, blue: 1, alpha: 1)
         loadCategories()
     }
+    
+    // MARK: - Alert controller
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
@@ -50,6 +54,8 @@ class CategoryTableViewController: UITableViewController {
         return categories.count
     }
     
+    // MARK: - TableViewDelegate
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
         let category = categories[indexPath.row]
@@ -61,7 +67,7 @@ class CategoryTableViewController: UITableViewController {
         self.performSegue(withIdentifier: "goToItems", sender: self)
     }
     
-    // MARK: - Manipulation
+    // MARK: - Manipulation functions
     
     private func saveCategories() {
         do {
