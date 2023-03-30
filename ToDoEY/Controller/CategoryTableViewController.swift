@@ -17,10 +17,27 @@ class CategoryTableViewController: UITableViewController {
         super.viewDidLoad()
         
         navigationController?.navigationBar.backgroundColor =  #colorLiteral(red: 0.2103916407, green: 0.5888115764, blue: 1, alpha: 1)
-        //loadCategories()
+        loadCategories()
     }
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        var textField = UITextField()
+        let alert = UIAlertController(title: "Add new category:", message: "", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Add", style: .default) { ok in
+            guard let new = textField.text else {
+                return
+            }
+            let newItem = CategoryItem(context: self.context)
+            newItem.name = new
+            self.categories.append(newItem)
+            self.saveCategories()
+        }
+        alert.addTextField { tf in
+            tf.placeholder = "new category"
+            textField = tf
+        }
+        alert.addAction(ok)
+        present(alert, animated: true)
     }
 
     // MARK: - Table view data source
@@ -35,13 +52,32 @@ class CategoryTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
-        let category = categories[indexPath.row].name
+        let category = categories[indexPath.row]
+        cell.textLabel?.text = category.name
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: "goToItems", sender: self)
     }
     
     // MARK: - Manipulation
     
+    private func saveCategories() {
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context: \(error.localizedDescription)")
+        }
+        self.tableView.reloadData()
+    }
+    
+    private func loadCategories(with request: NSFetchRequest<CategoryItem> = CategoryItem.fetchRequest()) {
+        do {
+            categories = try context.fetch(request)
+        } catch  {
+            print("Error fetch request: \(error.localizedDescription)")
+        }
+        tableView.reloadData()
+    }
 }
