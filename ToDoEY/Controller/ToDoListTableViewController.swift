@@ -9,6 +9,12 @@ import UIKit
 import CoreData
 
 class ToDoListTableViewController: UITableViewController {
+    
+    var selectedCategory: CategoryItem? {
+        didSet {
+            loadItems()
+        }
+    }
 
     var items = [Item]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -18,7 +24,6 @@ class ToDoListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.backgroundColor =  #colorLiteral(red: 0.2103916407, green: 0.5888115764, blue: 1, alpha: 1)
-        loadItems()
     }
 
     // MARK: - Table view data source
@@ -60,6 +65,7 @@ class ToDoListTableViewController: UITableViewController {
             let newItem = Item(context: self.context)
             newItem.title = new
             newItem.isDone = false
+            newItem.parentCategory = self.selectedCategory
             self.items.append(newItem)
             self.saveItems()
         }
@@ -80,7 +86,16 @@ class ToDoListTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-    private func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+    private func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
+        guard let name = selectedCategory?.name else {
+            return
+        }
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", name)
+        if let additionalPredicat = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [additionalPredicat, categoryPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
         do {
             items = try context.fetch(request)
         } catch  {
@@ -98,9 +113,9 @@ extension ToDoListTableViewController: UISearchBarDelegate {
             return
         }
         let request: NSFetchRequest<Item> = Item.fetchRequest()
-        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", text)
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", text)
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        loadItems(with: request)
+        loadItems(with: request, predicate: predicate)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

@@ -54,8 +54,6 @@ class CategoryTableViewController: UITableViewController {
         return categories.count
     }
     
-    // MARK: - TableViewDelegate
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
         let category = categories[indexPath.row]
@@ -63,8 +61,18 @@ class CategoryTableViewController: UITableViewController {
         return cell
     }
     
+    // MARK: - TableViewDelegate
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.performSegue(withIdentifier: "goToItems", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let destinationVC = segue.destination as! ToDoListTableViewController
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedCategory = categories[indexPath.row]
+        }
     }
     
     // MARK: - Manipulation functions
